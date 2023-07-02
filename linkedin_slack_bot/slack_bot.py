@@ -10,7 +10,6 @@ from linkedin_slack_bot.linkedin import API_Linkedin
 
 class Linkedin_Bot(API_Linkedin):
     def __init__(self, username, password, slack_token , channel_name , interval):
-        # super().__init__()
         self.api = API_Linkedin( username, password)
         self.client_slack = slack.WebClient(token = slack_token)
         self.interval = interval
