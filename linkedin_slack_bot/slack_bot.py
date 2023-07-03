@@ -15,28 +15,17 @@ class Linkedin_Bot(API_Linkedin):
         self.interval = interval
         self.channel = channel_name
 
-
-
     def run(self):
-
-
         processed_tracking_ids = list()
-
         max_elements = 25
-
-
 
         while True:
             search = self.api.get_conversations(0 , 25)
 
             encoded_str = json.dumps(search, ensure_ascii=False).encode('utf-8')
             decoded_str = encoded_str.decode('utf-8')
-            no_emoji_str = demoji.replace(decoded_str, '')
-            
-
+            no_emoji_str = demoji.replace(decoded_str, '')      
             parsed_data = json.loads(no_emoji_str)
-
-
 
             if "elements" in search:        
                 for m in parsed_data["elements"]:
@@ -48,9 +37,8 @@ class Linkedin_Bot(API_Linkedin):
                     s = m["events"][0]
                     entity = s["entityUrn"].split(":")[3]
 
-
                     if ((m['unreadCount'] == 1) and (s['subtype'] == "MEMBER_TO_MEMBER" or s['subtype'] == "INMAIL") and time_difference <= (self.interval + 40) and entity not in processed_tracking_ids):
-                                            
+                                        
                         text = s["eventContent"]["com.linkedin.voyager.messaging.event.MessageEvent"]["attributedBody"]["text"]
                         sender = s['from']['com.linkedin.voyager.messaging.MessagingMember']['miniProfile']
                         se_f = sender['firstName']
@@ -59,11 +47,8 @@ class Linkedin_Bot(API_Linkedin):
                         text_send = f"({formatted_datetime}) {se_f} {se_l} : '{text}'"
                         print(text_send)
                         self.client_slack.chat_postMessage(channel= self.channel , text = text_send)
-                        processed_tracking_ids.append(entity)
+                        processed_tracking_ids.append(entity)                 
                     
-                    
-
-
                     if m['unreadCount'] > 1:
                         conver_urn = m['dashEntityUrn'].split(":")[3]                
                         search_con = self.api.get_conversation(conver_urn)
@@ -90,7 +75,6 @@ class Linkedin_Bot(API_Linkedin):
                                 print(text_send_con)
                                 self.client_slack.chat_postMessage(channel= self.channel ,text = text_send_con)
                                 processed_tracking_ids.append(entity_con)
-
                 
             else:
                 print("No conversations found.")
