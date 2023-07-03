@@ -19,11 +19,6 @@ class Linkedin_Bot(API_Linkedin):
 
     def run(self):
 
-        # SLACK_TOKEN="xoxb-5469333287683-5496943101283-FVMsWsFXNu3PEiISChzJXEt4"    
-
-        # api = API_Linkedin('crackpots313@gmail.com', 'Warid@123')
-
-        # client_slack = slack.WebClient(token = SLACK_TOKEN)
 
         processed_tracking_ids = list()
 
